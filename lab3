@@ -1,0 +1,133 @@
+#include <iostream>
+using namespace std;
+
+void krat(int a, int b);
+class drob {
+public:
+    int x; int y;
+    drob() {
+        x = 1; y = 2;
+    };
+    drob(int x, int y) {
+        this->x = x;
+        if (y == 0) {
+            cout << "error";
+        }
+        else {
+            this->y = y;
+        }
+    };
+    drob(const drob& a) {
+        x = a.x;
+        y = a.y;
+    };
+    ~drob() { }
+    void add(const drob& a);
+    void min(const drob& a);
+    void mno(const drob& a);
+    void get_drob() {
+        krat(x, y);
+    }
+    friend drob operator +(drob const& a, drob const& b) {
+        drob c;
+        int i = a.y * b.y;
+        int x = (i / a.y) * a.x;
+        int y = (i / b.y) * b.x;
+        c.x = x + y;
+        c.y = i;
+        return c;
+    }
+    drob& operator =(drob const& a) {
+        x = a.x;
+        y = a.y;
+        return *this;
+    }
+};
+void drob::add(const drob& a) {
+    cout << x << "/" << y << "+" << a.x << "/" << a.y << "=";
+    if (y == a.y) {
+        x += a.x;
+        krat(x, y);
+    }
+    else {
+        int i = y * a.y;
+        int c = (i / y) * x;
+        int d = (i / a.y) * a.x;
+        x = c + d;
+        y = i;
+        krat(x, y);
+    }
+}
+void drob::min(const drob& a) {
+    cout << x << "/" << y << "-" << a.x << "/" << a.y << "=";
+    if (y == a.y) {
+        x -= a.x;
+        krat(x, y);
+    }
+    else {
+        int i = y * a.y;
+        int c = (i / y) * x;
+        int d = (i / a.y) * a.x;
+        x = c - d;
+        y = i;
+        krat(x, y);
+    }
+}
+void drob::mno(const drob& a) {
+    cout << x << "/" << y << "*" << a.x << "/" << a.y << "=";
+    x *= a.x;
+    y *= a.y;
+    krat(x, y);
+}
+class fulldrob : public drob
+{
+public:
+    int c;
+    fulldrob() {
+        c = 1;
+        drob();
+    }
+    fulldrob(int c, int x, int y) {
+        this->c = c;
+        this->x = x;
+        this->y = y;
+    }
+    fulldrob(const fulldrob& a) : drob(a) {
+        c = a.c;
+    }
+    void get() {
+        cout << c << "." << x << "/" << y << endl;
+    }
+};
+int main() {
+    drob x;
+    drob y(2, 3);
+    x.get_drob();
+    y.get_drob();
+    drob z = x + y;
+    z.get_drob();
+    x = z;
+    x.get_drob();
+    return 0;
+}
+void krat(int a, int b) {
+    int min = (a < b) ? a : b;
+    if (a == b) {
+        a = 1;
+        b = 1;
+        cout << "1" << endl;
+    }
+    else if (a % b == 0) {
+        cout << a / b << endl;
+    }
+    else {
+        for (int i = min; i > 1; i--)
+        {
+            if (a % i == 0 && b % i == 0) {
+                a /= i;
+                b /= i;
+            }
+        }
+        cout << a << "/" << b << endl;
+    }
+}
